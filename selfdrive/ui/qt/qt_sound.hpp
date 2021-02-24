@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QSoundEffect>
+//#include <QSoundEffect>
 #include "sound.hpp"
 
 class QtSound : public Sound {
@@ -10,6 +10,6 @@ public:
   void stop();
   void setVolume(int volume);
 
-private:
-  std::map<AudibleAlert, QSoundEffect> sounds;
+//private:
+//  std::map<AudibleAlert, QSoundEffect> sounds;
 };
