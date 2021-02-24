@@ -16,13 +16,16 @@ if qt_env is None:
     LINKFLAGS=linkflags,
     LIBS=libs)
 else:
-  qt_libs = qt_env["LIBS"] + libs + ["pthread", "ssl", "crypto"]
+  if arch == "aarch64":
+    libs += ['log', 'utils', 'gui', 'ui', 'CB', 'gsl', 'adreno_utils', 'cutils', 'uuid', 'OpenCL']
 
-  widgets = qt_env.Library("qt_widgets",
-                 ["qt/qt_sound.cc", "qt/widgets/keyboard.cc", "qt/widgets/input_field.cc", "qt/widgets/drive_stats.cc", "qt/widgets/ssh_keys.cc",
-                  "qt/offroad/networking.cc", "qt/offroad/wifiManager.cc", "qt/widgets/toggle.cc", "qt/widgets/offroad_alerts.cc", "qt/widgets/setup.cc"],
-                 LIBS=qt_libs)
-  qt_libs.append(widgets)
+  qt_libs = qt_env["LIBS"] + libs + ["pthread"]
+
+  #widgets = qt_env.Library("qt_widgets",
+  #               ["qt/qt_sound.cc", "qt/widgets/keyboard.cc", "qt/widgets/input_field.cc", "qt/widgets/drive_stats.cc", "qt/widgets/ssh_keys.cc",
+  #                "qt/offroad/networking.cc", "qt/offroad/wifiManager.cc", "qt/widgets/toggle.cc", "qt/widgets/offroad_alerts.cc", "qt/widgets/setup.cc"],
+  #               LIBS=qt_libs)
+  #qt_libs.append(widgets)
 
 
   if arch == "Darwin":
@@ -30,8 +33,8 @@ else:
     del qt_libs[qt_libs.index('OpenCL')]
     qt_env['FRAMEWORKS'] += ['OpenCL']
 
-  qt_src = ["qt/ui.cc", "qt/window.cc", "qt/home.cc", "qt/api.cc", "qt/offroad/settings.cc", "qt/offroad/onboarding.cc", "#phonelibs/qrcode/QrCode.cc"] + src
-  qt_env.Program("_ui", qt_src, LIBS=qt_libs)
+  #qt_src = ["qt/ui.cc", "qt/window.cc", "qt/home.cc", "qt/api.cc", "qt/offroad/settings.cc", "qt/offroad/onboarding.cc", "#phonelibs/qrcode/QrCode.cc"] + src
+  #qt_env.Program("_ui", qt_src, LIBS=qt_libs)
 
   # spinner and text window
   qt_env.Program("qt/text", ["qt/text.cc"], LIBS=qt_libs)
